@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 class DenunciaFocoForm extends StatefulWidget {
@@ -8,6 +9,19 @@ class DenunciaFocoForm extends StatefulWidget {
 
 class _DenunciaFocoFormState extends State<DenunciaFocoForm> {
   final _formKey = GlobalKey<FormState>();
+  File? _image;
+
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.getImage(source: ImageSource.camera);
+
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -42,6 +56,14 @@ class _DenunciaFocoFormState extends State<DenunciaFocoForm> {
               ),
               SizedBox(height: 20),
               Text('Ilustración:'),
+              _image == null
+                  ? Text('No se ha seleccionado una imagen.')
+                  : Image.file(_image!),
+              SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: _pickImage,
+                child: Text('Tomar Foto'),
+              ),
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
