@@ -64,10 +64,6 @@ class HomeScreen extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset(
-                  '../assets/icono.jpg', // Asegúrate de que este archivo exista
-                  height: 24.0,
-                ),
                 SizedBox(width: 8.0),
                 Text('Derechos reservados Error 404',
                   style: TextStyle(fontSize: 16.0),
