@@ -19,7 +19,7 @@ const appMenuItems = <MenuItem>[
       title: 'Botones',
       subTitle: 'Varios',
       link: '/buttons',
-      icon: Icons.smart_button_outlined
+      icon: Icons.videocam
     ),
 
     MenuItem(
