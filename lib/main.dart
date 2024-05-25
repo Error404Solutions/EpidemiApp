@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/auto/config/theme/app_theme.dart';
-import 'package:flutter_application_1/auto/presentation/buttons/buttons_screen.dart';
-import 'package:flutter_application_1/auto/presentation/screens/home/cards/cards_screen.dart';
-import 'package:flutter_application_1/auto/presentation/screens/home/home_screen.dart';
+import 'package:flutter_application_1/auto/presentation/router/app_router.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,14 +12,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      routerConfig: appRouter,
       debugShowCheckedModeBanner: false,
       theme: AppTheme(selectedColor: 3).getTheme(),
-      home: const HomeScreen(),
-      routes: {
-        '/buttons': (context) => const ButtonsScreens(),
-        '/cards': (context) => const CardsScreen(),
-      },
+      
     );
   }
 }
