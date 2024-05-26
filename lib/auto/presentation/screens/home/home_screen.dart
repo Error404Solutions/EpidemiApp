@@ -58,7 +58,7 @@ class _CustomListTitle extends StatelessWidget {
         //    builder: (context) => const ButtonsScreens(),
         //  ),
         //);
-        context.push(menuItem.link);
+        context.push( menuItem.link );
         //context.pushNamed(CardsScreen.name);
       },
     );
