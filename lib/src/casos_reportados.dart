@@ -10,9 +10,22 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Mapa del Dengue',
+      title: 'Tabla del Dengue',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.red,
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white,
+            foregroundColor: Colors.black,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+          ),
+        ),
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(
+          backgroundColor: Colors.red,
+          foregroundColor: Colors.white,
+        ),
       ),
       home: const PantallaPrincipal(),
     );
@@ -31,24 +44,46 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
     Localidad('Localidad 1', 10),
     Localidad('Localidad 2', 5),
     Localidad('Localidad 3', 15),
+    Localidad('Localidad 4', 6),
+    Localidad('Localidad 5', 14),
+    Localidad('Localidad 6', 8),
+    Localidad('Localidad 7', 1),
+    Localidad('Localidad 8', 20),
+    Localidad('Localidad 9', 9),
+    Localidad('Localidad 10', 11),
+    Localidad('Localidad 11', 15),
+    Localidad('Localidad 12', 2),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Mapa del Dengue'),
+        title: const Text('Tabla del Dengue'),
       ),
       body: Column(
         children: [
           const Padding(
             padding: EdgeInsets.all(16.0),
-            child: Text(
-              'Tabla de casos de dengue por localidad',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  'Tabla de casos de dengue por localidad',
+                  style: TextStyle(
+                    fontSize: 19,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 8.0),
+                Text(
+                  'En lo que va de la presente temporada 2023/2024',
+                  style: TextStyle(
+                    fontSize: 16,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
             ),
           ),
           Expanded(
@@ -98,7 +133,7 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
               onPressed: () {
                 // Navegar a la pantalla para denunciar un foco
               },
-              label: const Text('Denunciar foco'),
+              label: const Text('DENUNCIAR FOCO'),
               icon: const Icon(Icons.report),
             ),
           ),
