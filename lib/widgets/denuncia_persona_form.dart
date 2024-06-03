@@ -7,7 +7,7 @@ class DenunciaPersonaForm extends StatefulWidget {
 
 class _DenunciaPersonaFormState extends State<DenunciaPersonaForm> {
   final _formKey = GlobalKey<FormState>();
-  // Variables to store form data
+  DateTime? selectedDate; // Variable to store selected date
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +33,17 @@ class _DenunciaPersonaFormState extends State<DenunciaPersonaForm> {
               decoration: InputDecoration(labelText: 'Ubicación'),
               // Add validators and onSaved methods
             ),
+            GestureDetector(
+              onTap: () {
+                _selectDate(context);
+              },
+              child: AbsorbPointer(
+                child: TextFormField(
+                  decoration: InputDecoration(labelText: 'Fecha del Contagio'),
+                  controller: TextEditingController(text: selectedDate != null ? selectedDate.toString() : ''),
+                ),
+              ),
+            ),
             ElevatedButton(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
@@ -45,5 +56,20 @@ class _DenunciaPersonaFormState extends State<DenunciaPersonaForm> {
         ),
       ),
     );
+  }
+
+  // Function to open date picker
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2020),
+      lastDate: DateTime.now(),
+    );
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+      });
+    }
   }
 }
