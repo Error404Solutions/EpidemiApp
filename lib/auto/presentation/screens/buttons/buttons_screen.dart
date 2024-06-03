@@ -28,6 +28,9 @@ class _ButtonsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final colors = Theme.of(context).colorScheme;
+
     return SizedBox(
       width: double.infinity,
       child: Padding(
@@ -54,6 +57,30 @@ class _ButtonsView extends StatelessWidget {
 
 
             OutlinedButton(onPressed: () { }, child: const Text ('outline')),
+            OutlinedButton.icon(
+              onPressed: () { }, 
+              label: const Text('Outline boton'),
+              icon: const Icon (Icons.terminal)
+            ),
+
+            TextButton(onPressed: () { } , child: const Text('Text')),
+            TextButton.icon(
+              onPressed: () { } ,
+              icon: const Icon(Icons.account_box_outlined),
+              label: const Text('Text Icon'), 
+            ),
+
+            //TODO  custom button
+
+            IconButton(onPressed: () { }, icon: const Icon(Icons.app_registration_rounded)),
+            IconButton(
+              onPressed: () { }, 
+              icon: const Icon(Icons.app_registration_rounded),
+              style: ButtonStyle(
+                backgroundColor: MaterialStatePropertyAll(colors.primary),
+                iconColor: const MaterialStatePropertyAll(Colors.white),
+              ),
+            ),
 
           ],
         ),
