@@ -35,4 +35,16 @@ const appMenuItems = <MenuItem>[
       link: '/progress',
       icon: Icons.refresh_rounded
     ),
+    MenuItem(
+      title: 'Snackbars y dialogos', 
+      subTitle: 'Indicadores en pantalla',
+      link: '/snackbars',
+      icon: Icons.info_outline
+    ),
+    MenuItem(
+      title: 'Peligros de la automedicacion',
+      subTitle: 'La información proporcionada aquí no es un sustituto del consejo médico profesional.',
+      link: '/tutorial',
+      icon: Icons.info_outline
+    ),
 ];
