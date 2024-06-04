@@ -16,7 +16,7 @@ class _DenunciaFocoFormState extends State<DenunciaFocoForm> {
 
   Future<void> _pickImage() async {
     final picker = ImagePicker();
-    final pickedFile = await picker.getImage(source: ImageSource.camera);
+    final pickedFile = await picker.pickerImage(source: ImageSource.camera);
 
     if (pickedFile != null) {
       setState(() {
