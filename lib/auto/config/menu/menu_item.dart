@@ -15,7 +15,7 @@ class MenuItem {
 
 
 const appMenuItems = <MenuItem>[
-  MenuItem(
+  /* MenuItem(
       title: 'Botones',
       subTitle: 'Varios',
       link: '/buttons',
@@ -40,10 +40,16 @@ const appMenuItems = <MenuItem>[
       subTitle: 'Indicadores en pantalla',
       link: '/snackbars',
       icon: Icons.info_outline
-    ),
+    ), */
     MenuItem(
       title: 'Peligros de la automedicacion',
       subTitle: 'La información proporcionada aquí no es un sustituto del consejo médico profesional.',
+      link: '/tutorial',
+      icon: Icons.info_outline
+    ),
+    MenuItem(
+      title: 'Videos cortos y educativos',
+      subTitle: 'Practicas y uso racional de medicamentos.',
       link: '/tutorial',
       icon: Icons.info_outline
     ),

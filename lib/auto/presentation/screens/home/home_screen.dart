@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/auto/config/menu/menu_item.dart';
-import 'package:flutter_application_1/auto/presentation/screens/cards/cards_screen.dart';
 import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -24,14 +23,25 @@ class _HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      //physics: const BouncingScrollPhysics(),
-      itemCount: appMenuItems.length,
-      itemBuilder: (context, index) {
-        final menuItem = appMenuItems[index];
-
-        return _CustomListTitle(menuItem: menuItem);
-      },
+    return Scaffold(
+      /* appBar: AppBar(
+        title: const Text('Peligros de la automedicación'),
+      ), */
+      body: Column( // Use a Column for stacking
+        children: [
+          const _HomeImage(imageUrl: 'nico/4.png'), // Replace with your image path
+          const Divider(), // Optional divider between image and list
+          Expanded( // Use Expanded for remaining space
+            child: ListView.builder(
+              itemCount: appMenuItems.length,
+              itemBuilder: (context, index) {
+                final menuItem = appMenuItems[index];
+                return _CustomListTitle(menuItem: menuItem);
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -58,9 +68,30 @@ class _CustomListTitle extends StatelessWidget {
         //    builder: (context) => const ButtonsScreens(),
         //  ),
         //);
-        context.push( menuItem.link );
+        context.push(menuItem.link);
         //context.pushNamed(CardsScreen.name);
       },
+    );
+  }
+}
+
+class _HomeImage extends StatelessWidget {
+  final String imageUrl; // Assuming menuItem has imageUrl
+
+  const _HomeImage({
+    required this.imageUrl,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16.0), // Adjust padding as needed
+      child: Image.asset(
+        imageUrl,
+        width: double.infinity, // Match screen width
+        height: 400, // Adjust image height as needed
+        fit: BoxFit.cover, // Adjust image fit as needed
+      ),
     );
   }
 }
