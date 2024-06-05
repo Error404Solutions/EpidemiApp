@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import '../models/tendencias.dart';
+import '../models/localidad_info.dart';
 import '../widgets/tendencias_chart.dart';
+import '../widgets/localidad_table.dart';
+import 'denuncia_screen.dart';
 
 class TendenciasScreen extends StatefulWidget {
   @override
@@ -18,7 +21,17 @@ class _TendenciasScreenState extends State<TendenciasScreen> {
     Tendencia(mes: 'Julio', casosPositivos: 7, casosSospechosos: 6, tipo: 'B. Gubernamental'),
   ];
 
+  final List<LocalidadInfo> localidades = [
+    LocalidadInfo(nombre: 'Localidad 1', casos: 10, distancia: '5 km'),
+    LocalidadInfo(nombre: 'Localidad 2', casos: 5, distancia: '10 km'),
+    LocalidadInfo(nombre: 'Localidad 3', casos: 15, distancia: '3 km'),
+    LocalidadInfo(nombre: 'Localidad 4', casos: 3, distancia: '5 Km'),
+    LocalidadInfo(nombre: 'Localidad 5', casos: 21, distancia: '20 Km'),
+  ];
+
   String _currentChartType = 'Line';
+  LocalidadInfo? selectedLocalidad;
+  TextEditingController searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -36,42 +49,35 @@ class _TendenciasScreenState extends State<TendenciasScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             TextField(
+              controller: searchController,
               decoration: InputDecoration(
-                hintText: 'Buscar País',
+                hintText: 'Buscar localidad por número',
                 prefixIcon: Icon(Icons.search),
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
               ),
+              keyboardType: TextInputType.number,
+              onSubmitted: (value) {
+                int? numero = int.tryParse(value);
+                if (numero != null) {
+                  setState(() {
+                    selectedLocalidad = localidades.firstWhere(
+                      (loc) => loc.nombre == 'Localidad $numero',
+                      orElse: () => LocalidadInfo(nombre: 'No encontrada', casos: 0, distancia: '0 Km'),
+                    );
+                  });
+                }
+              },
             ),
             SizedBox(height: 20),
-            Row(
-              children: [
-                SizedBox(width: 10),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    child: Text('# Meses', style: TextStyle(color: Colors.white)),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue[800],
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                    ),
-                  ),
-                ),
-                SizedBox(width: 10),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    child: Text('# Años', style: TextStyle(color: Colors.white)),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue[800],
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 20),
+            if (selectedLocalidad != null) ...[
+              Text('Información de la Localidad', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              SizedBox(height: 10),
+              LocalidadTable(localidad: selectedLocalidad!),
+              SizedBox(height: 20),
+            ],
             Expanded(
               child: Container(
+                height: 300,
                 decoration: BoxDecoration(
                   color: Colors.blue[800],
                   borderRadius: BorderRadius.circular(20), // Radio de borde de 20
@@ -89,14 +95,17 @@ class _TendenciasScreenState extends State<TendenciasScreen> {
               children: [
                 _buildChartTypeButton('Line', 'Linea'),
                 _buildChartTypeButton('Bar', 'Barras'),
-                _buildChartTypeButton('Pie', 'Torta'),
-                _buildChartTypeButton('Polar', 'Polar'),
+                _buildChartTypeButton('Pie', 'Circular'),
+                _buildChartTypeButton('Polar', 'Pastel'),
               ],
             ),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                // Acción para registrar un caso positivo
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => DenunciaScreen()),
+                );
               },
               child: Text('REGISTRAR CASO POSITIVO', style: TextStyle(color: Colors.white)),
               style: ElevatedButton.styleFrom(
