@@ -1,3 +1,4 @@
+import 'package:flutter_application_1/auto/presentation/screens/app_videos/app_videos_screen.dart';
 import 'package:flutter_application_1/auto/presentation/screens/screens.dart';
 import 'package:go_router/go_router.dart';
 
@@ -37,6 +38,11 @@ final appRouter = GoRouter(
       path: '/tutorial',
       name: AppTutorialScreen.name,
       builder: (context, state) => const AppTutorialScreen(),
+    ),
+    GoRoute(
+      path: '/videos',
+      name: AppVideosScreen.name,
+      builder: (context, state) => const AppVideosScreen(),
     ),
   ],
 );

@@ -50,7 +50,7 @@ const appMenuItems = <MenuItem>[
     MenuItem(
       title: 'Videos cortos y educativos',
       subTitle: 'Practicas y uso racional de medicamentos.',
-      link: '/tutorial',
+      link: '/videos',
       icon: Icons.info_outline
     ),
 ];
