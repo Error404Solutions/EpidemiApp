@@ -41,18 +41,18 @@ class PantallaPrincipal extends StatefulWidget {
 
 class _PantallaPrincipalState extends State<PantallaPrincipal> {
   List<Localidad> localidades = [
-    Localidad('Localidad 1', 10),
-    Localidad('Localidad 2', 5),
-    Localidad('Localidad 3', 15),
-    Localidad('Localidad 4', 6),
-    Localidad('Localidad 5', 14),
-    Localidad('Localidad 6', 8),
-    Localidad('Localidad 7', 1),
-    Localidad('Localidad 8', 20),
-    Localidad('Localidad 9', 9),
-    Localidad('Localidad 10', 11),
-    Localidad('Localidad 11', 15),
-    Localidad('Localidad 12', 2),
+    Localidad('Localidad 1', 10, 5.2),
+    Localidad('Localidad 2', 5, 8.1),
+    Localidad('Localidad 3', 15, 3.7),
+    Localidad('Localidad 4', 6, 12.5),
+    Localidad('Localidad 5', 14, 7.9),
+    Localidad('Localidad 6', 8, 6.3),
+    Localidad('Localidad 7', 1, 10.8),
+    Localidad('Localidad 8', 20, 2.4),
+    Localidad('Localidad 9', 9, 9.6),
+    Localidad('Localidad 10', 11, 4.5),
+    Localidad('Localidad 11', 15, 6.7),
+    Localidad('Localidad 12', 2, 11.2),
   ];
 
   @override
@@ -93,6 +93,9 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
                   columns: const [
                     DataColumn(label: Text('Localidad')),
                     DataColumn(label: Text('Casos')),
+                    DataColumn(
+                        label: Text(
+                            'Distancia (km)')), // Nueva columna de distancia
                   ],
                   rows: localidades
                       .map(
@@ -100,6 +103,8 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
                           cells: [
                             DataCell(Text(localidad.nombre)),
                             DataCell(Text(localidad.casos.toString())),
+                            DataCell(Text(localidad.distancia
+                                .toString())), // Nueva celda de distancia
                           ],
                         ),
                       )
@@ -115,13 +120,17 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
                 onPressed: () {},
                 child: const Text('Distancia'),
               ),
-              ElevatedButton(
-                onPressed: () {},
-                child: const Text('Duración'),
-              ),
-              ElevatedButton(
-                onPressed: () {},
-                child: const Text('Ubicación'),
+              TextButton(
+                onPressed: () {
+                  // Navegar a la pantalla de tendencias
+                },
+                child: const Text(
+                  'Consulta tendencias',
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 214, 79, 25),
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
               ),
             ],
           ),
@@ -146,6 +155,7 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
 class Localidad {
   final String nombre;
   final int casos;
+  final double distancia;
 
-  Localidad(this.nombre, this.casos);
+  Localidad(this.nombre, this.casos, this.distancia);
 }
