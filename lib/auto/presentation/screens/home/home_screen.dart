@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/auto/config/menu/menu_item.dart';
+import 'package:flutter_application_1/auto/presentation/blocs/notifications/notifications_bloc.dart';
 import 'package:flutter_application_1/auto/presentation/widgets/side_menu.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
   static const String name = 'home_screen';
@@ -16,7 +18,19 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        title: const Text('Peligros de la automedicación'),
+        title: context.select(
+          ( NotificationsBloc bloc) => Text('${ bloc.state.status }')
+        ),
+
+        //const Text('Peligros de la automedicación'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              context.read<NotificationsBloc>().requestPermission();
+            },
+            icon: const Icon(Icons.settings), 
+          )
+        ],
       ),
       body: const _HomeView(),
       drawer: SideMenu( scaffoldKey: scaffoldKey )
@@ -24,15 +38,17 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
+
+
 class _HomeView extends StatelessWidget {
   const _HomeView();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /* appBar: AppBar(
+      appBar: AppBar(
         title: const Text('Peligros de la automedicación'),
-      ), */
+      ),
       body: Column( // Use a Column for stacking
         children: [
           const _HomeImage(imageUrl: 'nico/4.png'), // Replace with your image path

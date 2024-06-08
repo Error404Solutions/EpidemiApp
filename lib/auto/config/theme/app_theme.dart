@@ -34,3 +34,10 @@ class AppThemeV {
   );
 
 }
+
+class AppThemeNotifications {
+  ThemeData getTheme () => ThemeData(
+    useMaterial3: true,
+    colorSchemeSeed: Colors.red
+  );
+}
