@@ -5,11 +5,13 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  static const name = 'myapp';
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Tabla del Dengue',
       theme: ThemeData(
         primarySwatch: Colors.red,

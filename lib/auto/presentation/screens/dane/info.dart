@@ -1,35 +1,31 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
-void main() {
-  runApp(const InformacionDengue());
-}
-
-class InformacionDengue extends StatelessWidget {
+class Info extends StatelessWidget {
   static const name = 'informacion_dengue';
-  const InformacionDengue({super.key});
+  const Info({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       title: 'Portafolio Educativo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomePage(),
+      home: _HomePage1(),
     );
   }
 }
 
-class HomePage extends StatelessWidget {
+
+class _HomePage1 extends StatelessWidget {
   final List<String> imageList = [
     'assets/dengue/dengue_info_1.jpg',
     'assets/dengue/dengue_info_2.jpg',
     'assets/dengue/dengue_info_3.jpg',
   ];
 
-  HomePage({super.key});
+  _HomePage1({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -62,8 +58,7 @@ class HomePage extends StatelessWidget {
                   const SizedBox(height: 16),
                   const AspectRatio(
                     aspectRatio: 16 / 9,
-                    child:
-                        VideoWidget(), // Implementa tu propio widget de video aquí
+                    child:VideoWidget(), // Implementa tu propio widget de video aquí
                   ),
                   const SizedBox(height: 16),
                   ElevatedButton(
