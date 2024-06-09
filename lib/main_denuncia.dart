@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'screens/denuncia_foco_screen.dart';
 import 'screens/denuncia_persona_screen.dart';
 
-void main() {
-  runApp(MyApp());
-}
+
 
 class MyApp extends StatelessWidget {
   @override
