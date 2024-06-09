@@ -51,21 +51,17 @@ class _TendenciasScreenState extends State<TendenciasScreen> {
             TextField(
               controller: searchController,
               decoration: InputDecoration(
-                hintText: 'Buscar localidad por número',
+                hintText: 'Buscar localidad por nombre',
                 prefixIcon: Icon(Icons.search),
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
               ),
-              keyboardType: TextInputType.number,
               onSubmitted: (value) {
-                int? numero = int.tryParse(value);
-                if (numero != null) {
-                  setState(() {
-                    selectedLocalidad = localidades.firstWhere(
-                      (loc) => loc.nombre == 'Localidad $numero',
-                      orElse: () => LocalidadInfo(nombre: 'No encontrada', casos: 0, distancia: '0 Km'),
-                    );
-                  });
-                }
+                setState(() {
+                  selectedLocalidad = localidades.firstWhere(
+                    (loc) => loc.nombre.toLowerCase() == value.toLowerCase(),
+                    orElse: () => LocalidadInfo(nombre: 'No encontrada', casos: 0, distancia: '0 Km'),
+                  );
+                });
               },
             ),
             SizedBox(height: 20),
