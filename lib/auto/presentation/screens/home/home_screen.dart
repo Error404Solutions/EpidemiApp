@@ -45,6 +45,9 @@ class _HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final notifications = context.watch<NotificationsBloc>().state.notifications;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Peligros de la automedicación'),
