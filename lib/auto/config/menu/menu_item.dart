@@ -54,13 +54,13 @@ const appMenuItems = <MenuItem>[
       icon: Icons.info_outline
     ),
     MenuItem(
-      title: 'Casos',
+      title: 'Casos Registrados',
       subTitle: 'Tabla de casos del dengue.',
       link: '/casos',
       icon: Icons.info_outline
     ),
     MenuItem(
-      title: 'Informacion',
+      title: 'Informacion Dengue',
       subTitle: 'Portafolio educativo.',
       link: '/info',
       icon: Icons.info_outline

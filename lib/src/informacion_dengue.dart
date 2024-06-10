@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import '../screens/denuncia_screen.dart';
 
 void main() {
   runApp(const InformacionDengue());
@@ -62,15 +63,24 @@ class HomePage extends StatelessWidget {
                   const SizedBox(height: 16),
                   const AspectRatio(
                     aspectRatio: 16 / 9,
-                    child:
-                        VideoWidget(), // Implementa tu propio widget de video aquí
+                    child: VideoWidget(), // Implementa tu propio widget de video aquí
                   ),
                   const SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: () {
-                      // Lógica de denuncia aquí
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => DenunciaScreen()),
+                      );
                     },
-                    child: const Text('DENUNCIA'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      textStyle: const TextStyle(fontSize: 12),
+                    ),
+                    child: const Text('REALIZAR DENUNCIA', style: TextStyle(color: Colors.white)),
                   ),
                   const SizedBox(height: 16),
                   Card(
