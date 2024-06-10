@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../screens/tendencias_screen.dart';  // Importa la pantalla de tendencias
 
 void main() {
   runApp(const MyApp());
@@ -115,39 +116,24 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
               ],
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              ElevatedButton(
-                onPressed: () {},
-                child: const Text('Distancia'),
-              ),
-              TextButton(
+          const SizedBox(height: 20.0), // Espacio entre la tabla y el botón
+          Center(
+            child: SizedBox(
+              width: 200,
+              height: 50,
+              child: FloatingActionButton.extended(
                 onPressed: () {
-                  // Navegar a la pantalla de tendencias
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => TendenciasScreen()),
+                  );
                 },
-                child: const Text(
-                  'Consulta tendencias',
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 214, 79, 25),
-                    decoration: TextDecoration.underline,
-                  ),
-                ),
+                label: const Text('TENDENCIAS'),
+                icon: const Icon(Icons.show_chart), // Icono de gráfica
               ),
-            ],
-          ),
-          const SizedBox(height: 16.0),
-          SizedBox(
-            width: 200,
-            height: 50,
-            child: FloatingActionButton.extended(
-              onPressed: () {
-                // Navegar a la pantalla para denunciar un foco
-              },
-              label: const Text('DENUNCIAR FOCO'),
-              icon: const Icon(Icons.report),
             ),
           ),
+          const SizedBox(height: 20.0), // Espacio entre el botón y el final de la página
         ],
       ),
     );
