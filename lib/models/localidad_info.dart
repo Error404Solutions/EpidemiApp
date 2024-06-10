@@ -6,6 +6,15 @@ class LocalidadInfo {
   LocalidadInfo({
     required this.nombre,
     required this.casos,
-    required this.distancia,
+    required this.distancia
   });
+
+  factory LocalidadInfo.fromJson(Map<String, dynamic> json) {
+    return LocalidadInfo(
+      nombre: json['ubicacion'],
+      casos: json['count'],
+      distancia: json['distancia']
+    );
+  }
+
 }
