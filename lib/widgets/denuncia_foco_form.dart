@@ -83,6 +83,26 @@ class _DenunciaFocoFormState extends State<DenunciaFocoForm> {
     });
   }
 
+  void _showDialog(String title, String content) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(title),
+            content: Text(content),
+            actions: [
+              TextButton(
+                child: Text("OK"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+   }
+
   void _handleSubmit() {
     if (_formKey.currentState!.validate()) {
       String descripcion = descripcionController.text;
@@ -174,4 +194,5 @@ class _DenunciaFocoFormState extends State<DenunciaFocoForm> {
       ),
     );
   }
+
 }
