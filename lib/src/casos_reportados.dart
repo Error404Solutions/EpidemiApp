@@ -59,7 +59,7 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
       
       if (response.statusCode == 200) {
         List<dynamic> data = json.decode(response.body);
-        print(data);  // Agregar esta línea para depuración
+        print(data);  // Agregada esta línea para depuración
         setState(() {
           localidades = data.map((json) => Localidad.fromJson(json)).toList();
         });
