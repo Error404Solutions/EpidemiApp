@@ -2,15 +2,17 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const InformacionDengue());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class InformacionDengue extends StatelessWidget {
+  static const name = 'informacion_dengue';
+  const InformacionDengue({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Portafolio Educativo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -22,9 +24,9 @@ class MyApp extends StatelessWidget {
 
 class HomePage extends StatelessWidget {
   final List<String> imageList = [
-    'assets/dengue_info_1.png',
-    'assets/dengue_info_2.png',
-    'assets/dengue_info_3.png',
+    'assets/dengue/dengue_info_1.jpg',
+    'assets/dengue/dengue_info_2.jpg',
+    'assets/dengue/dengue_info_3.jpg',
   ];
 
   HomePage({super.key});
