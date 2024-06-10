@@ -2,6 +2,18 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import '../models/tendencias.dart';
 
+/*
+Este archivo contiene el código para el widget TendenciasChart, un componente altamente dinámico
+y reutilizable en una aplicación Flutter. El propósito de este widget es visualizar datos de tendencias
+(posiblemente relacionados con casos de una enfermedad) de múltiples maneras, adaptándose a las
+preferencias del usuario.
+
+Características principales:
+- Utiliza el paquete fl_chart para crear gráficos interactivos y visualmente atractivos.
+- Soporta cuatro tipos de gráficos: Línea, Barra, Pastel y Polar.
+- Toma una lista de objetos Tendencia y el tipo de gráfico deseado como parámetros.
+- Adapta la visualización de datos basándose en propiedades del objeto Tendencia (tipo, mes, casos). */
+
 class TendenciasChart extends StatelessWidget {
   final List<Tendencia> data;
   final String chartType;

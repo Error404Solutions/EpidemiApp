@@ -2,6 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
+/*
+Este archivo contiene el código para el widget DenunciaFocoForm, que es parte de una aplicación Flutter.
+El propósito de este widget es proporcionar un formulario interactivo para que los usuarios
+denuncien un "foco" de algún problema (posiblemente un foco de infección o un área problemática).
+
+Características principales:
+- Formulario con campos para ingresar una descripción, ubicación, y fecha.
+- Validación de campos para asegurar que todos estén completos.
+- Límite de 500 caracteres para el campo de descripción.
+- Selector de fecha que utiliza el widget showDatePicker de Flutter.
+- Función para tomar una foto usando la cámara del dispositivo (usando el paquete image_picker).
+- Visualización de la imagen capturada directamente en el formulario.
+- Diálogos para mostrar mensajes de éxito o errores (como descripción demasiado larga o fecha incorrecta).
+- Función para limpiar todos los campos después de un envío exitoso. */
+
 class DenunciaFocoForm extends StatefulWidget {
   @override
   _DenunciaFocoFormState createState() => _DenunciaFocoFormState();

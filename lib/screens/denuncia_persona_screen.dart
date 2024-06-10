@@ -1,5 +1,21 @@
 import 'package:flutter/material.dart';
 
+/*
+
+Este archivo contiene el código para la pantalla DenunciaPersonaScreen en una aplicación Flutter.
+El propósito de esta pantalla es permitir a los usuarios denunciar a una persona que ha sido
+contagiada, posiblemente con alguna enfermedad infecciosa.
+
+Características principales:
+- Formulario con campos para ingresar nombre, apellido, síntomas y ubicación de la persona contagiada.
+- Validación de campos para asegurar que todos estén completos.
+- Límite de 100 caracteres para los campos de nombre y apellido.
+- El selector de fecha que permite al usuario elegir la fecha del contagio, restringido a fechas
+  desde 2020 hasta el día actual.
+- Validación adicional para asegurar que la fecha seleccionada sea la fecha actual.
+- Diálogos personalizados para mostrar errores específicos (campos incompletos, nombre o apellido
+  demasiado largos, fecha incorrecta) y para confirmar el envío exitoso de los datos. */
+
 class DenunciaPersonaScreen extends StatefulWidget {
   @override
   _DenunciaPersonaScreenState createState() => _DenunciaPersonaScreenState();

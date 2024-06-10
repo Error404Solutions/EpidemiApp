@@ -2,6 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
+/* Este código define una pantalla de Flutter llamada DenunciaFocoScreen, que permite a los usuarios
+   denunciar un "foco" (posiblemente un foco de infección o un problema en una ubicación específica).
+   La pantalla incluye un formulario con campos para ingresar una descripción, ubicación y fecha,
+   así como la opción de tomar una foto usando la cámara del dispositivo.
+
+   Características principales:
+   - Validación de campos del formulario (descripción, ubicación y fecha).
+   - Límite de 500 caracteres para la descripción.
+   - Selector de fecha que solo permite seleccionar la fecha actual.
+   - Captura de imagen usando la cámara del dispositivo.
+   - Muestra diálogos para informar al usuario sobre errores o éxito en el envío.
+   - Limpia los campos del formulario después de un envío exitoso. */
+
 class DenunciaFocoScreen extends StatefulWidget {
   @override
   _DenunciaFocoScreenState createState() => _DenunciaFocoScreenState();

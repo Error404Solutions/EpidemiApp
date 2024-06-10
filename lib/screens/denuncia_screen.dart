@@ -2,6 +2,19 @@ import 'package:flutter/material.dart';
 import 'denuncia_foco_screen.dart';
 import 'denuncia_persona_screen.dart';
 
+/*
+Este archivo contiene el código para la pantalla DenunciaScreen en una aplicación Flutter.
+El propósito de esta pantalla es servir como un punto de entrada para que los usuarios
+elijan el tipo de denuncia que desean realizar, ya sea denunciar un foco de infección
+o denunciar a una persona contagiada.
+
+Características principales:
+- Interfaz simple y clara con dos botones grandes.
+- Navegación a pantallas específicas (DenunciaFocoScreen y DenunciaPersonaScreen)
+  dependiendo del botón presionado.
+- Diseño responsivo que se adapta al tamaño de la pantalla.
+- Estilo personalizado para los botones, incluyendo colores, padding, y bordes redondeados.*/
+
 class DenunciaScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

@@ -1,5 +1,18 @@
 import 'package:flutter/material.dart';
 
+/*
+Este archivo contiene el código para el widget DenunciaPersonaForm, que es parte de una aplicación Flutter.
+El propósito de este widget es proporcionar un formulario para que los usuarios denuncien a una persona
+que ha sido contagiada, posiblemente con una enfermedad infecciosa como COVID-19.
+
+Características principales:
+- Formulario con campos para ingresar el nombre, apellido, síntomas y ubicación de la persona contagiada.
+- Utiliza un GlobalKey<FormState> para manejar la validación del formulario.
+- Campo de fecha interactivo que abre un DatePicker cuando se toca.
+- El DatePicker está configurado para permitir fechas desde 2020 hasta el día actual.
+- La fecha seleccionada se muestra en el campo de texto.
+- Botón "Enviar" que valida el formulario antes de procesar los datos. */
+
 class DenunciaPersonaForm extends StatefulWidget {
   @override
   _DenunciaPersonaFormState createState() => _DenunciaPersonaFormState();

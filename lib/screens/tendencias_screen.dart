@@ -5,6 +5,19 @@ import '../widgets/tendencias_chart.dart';
 import '../widgets/localidad_table.dart';
 import 'denuncia_screen.dart';
 
+/*
+Este archivo contiene el código para la pantalla TendenciasScreen en una aplicación Flutter.
+El propósito de esta pantalla es mostrar tendencias de casos de una enfermedad (posiblemente COVID-19)
+en diferentes localidades, permitiendo al usuario visualizar los datos de varias maneras y
+registrar nuevos casos positivos.
+
+Características principales:
+- Búsqueda de localidades por nombre, mostrando información detallada de la localidad seleccionada.
+- Gráfico interactivo de tendencias que muestra casos positivos y sospechosos por mes.
+- Opciones para cambiar el tipo de gráfico (línea, barras, circular, pastel).
+- Botón para registrar un nuevo caso positivo, que navega a la pantalla DenunciaScreen.
+- Diseño responsivo y estéticamente agradable con colores y bordes redondeados. */
+
 class TendenciasScreen extends StatefulWidget {
   @override
   _TendenciasScreenState createState() => _TendenciasScreenState();
