@@ -16,29 +16,6 @@ class ProgressScreen extends StatelessWidget {
   }
 }
 
-class _ProgressView extends StatelessWidget {
-  const _ProgressView();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Column(
-        children: [
-          SizedBox(height: 30),
-          Text('Circular progress'),
-          SizedBox(height: 10),
-          CircularProgressIndicator(
-              strokeWidth: 3, backgroundColor: Colors.black45),
-          SizedBox(height: 30),
-          Text('Circular y linear controlado'),
-          SizedBox(height: 10),
-          _ControlledProgressIndicator(),
-        ],
-      ),
-    );
-  }
-}
-
 class _ControlledProgressIndicator extends StatelessWidget {
   const _ControlledProgressIndicator();
 
