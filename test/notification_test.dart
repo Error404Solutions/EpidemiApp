@@ -39,7 +39,7 @@ void main() {
         data: message.data,
         imageUrl: Platform.isAndroid ? message.notification!.android?.imageUrl : message.notification!.apple?.imageUrl,
       );
-      expect(notification.title, '1Los riesgos de la automedicación');
+      expect(notification.title, 'Los riesgos de la automedicación');
     }
 
     // Ejecutar la función con el mensaje simulado

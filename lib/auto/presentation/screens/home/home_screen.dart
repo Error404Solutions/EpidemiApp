@@ -45,24 +45,49 @@ class _HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final notifications = context.watch<NotificationsBloc>().state.notifications;
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Peligros de la automedicación'),
       ),
-      body: Column( // Use a Column for stacking
+      body: Column(
         children: [
-          const _HomeImage(imageUrl: 'nico/4.png'), // Replace with your image path
-          const Divider(), // Optional divider between image and list
-          Expanded( // Use Expanded for remaining space
-            child: ListView.builder(
-              itemCount: appMenuItems.length,
-              itemBuilder: (context, index) {
-                final menuItem = appMenuItems[index];
-                return _CustomListTitle(menuItem: menuItem);
-              },
+          const _HomeImage(imageUrl: 'nico/4.png'),
+          const Divider(),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: appMenuItems.length,
+                    itemBuilder: (context, index) {
+                      final menuItem = appMenuItems[index];
+                      return _CustomListTitle(menuItem: menuItem);
+                    },
+                  ),
+                ),
+                const SizedBox(height: 16), // Espacio entre el contenido y Notificaciones
+                const Text('Notificaciones', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                const SizedBox(height: 8), // Espacio entre el título de Notificaciones y la lista
+                Expanded(
+                  flex: 1, // Ajusta el tamaño de Notificaciones según sea necesario
+                  child: ListView.builder(
+                    itemCount: notifications.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final notification = notifications[index];
+                      return ListTile(
+                        title: Text(notification.title),
+                        subtitle: Text(notification.body),
+                        leading: notification.imageUrl != null
+                            ? Image.network(notification.imageUrl!)
+                            : null,
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
           ),
         ],
@@ -70,6 +95,7 @@ class _HomeView extends StatelessWidget {
     );
   }
 }
+
 
 class _CustomListTitle extends StatelessWidget {
   const _CustomListTitle({
@@ -114,9 +140,10 @@ class _HomeImage extends StatelessWidget {
       child: Image.asset(
         imageUrl,
         width: double.infinity, // Match screen width
-        height: 400, // Adjust image height as needed
+        height: 300, // Adjust image height as needed
         fit: BoxFit.cover, // Adjust image fit as needed
       ),
     );
   }
 }
+
