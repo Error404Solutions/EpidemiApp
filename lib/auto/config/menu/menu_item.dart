@@ -13,6 +13,7 @@ class MenuItem {
       required this.icon});
 }
 
+//Menu principal de la aplicacion utilizando la clase MenuItem
 const appMenuItems = <MenuItem>[
   MenuItem(
       title: 'Peligros de la automedicacion',
