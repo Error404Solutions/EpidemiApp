@@ -15,7 +15,6 @@ void main() async {
    await NotificationsBloc.initializeFCM();
 
   runApp(
-    //const MyApp()
     MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => NotificationsBloc() )
@@ -27,7 +26,6 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
