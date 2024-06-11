@@ -1,8 +1,5 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'main_denuncia.dart' as main_denuncia;
-import 'src/informacion_dengue.dart';
-import 'src/casos_reportados.dart';
 import 'package:flutter_application_1/auto/config/theme/app_theme.dart';
 import 'package:flutter_application_1/auto/config/router/app_router.dart';
 import 'package:flutter_application_1/auto/presentation/blocs/notifications/notifications_bloc.dart';
