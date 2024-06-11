@@ -8,5 +8,4 @@ export 'package:flutter_application_1/auto/presentation/screens/progress/progres
 export 'package:flutter_application_1/auto/presentation/screens/snackbar/snackbar_screen.dart';
 export 'package:flutter_application_1/auto/presentation/screens/ui_controls/ui_controls_screen.dart';
 export 'package:flutter_application_1/auto/presentation/screens/buttons/buttons_screen.dart';
-export 'package:flutter_application_1/auto/presentation/screens/cards/cards_screen.dart';
 export 'package:flutter_application_1/auto/presentation/screens/home/home_screen.dart';
