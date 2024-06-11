@@ -2,18 +2,6 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import '../models/tendencias.dart';
 
-/*
-Este archivo contiene el código para el widget TendenciasChart, un componente altamente dinámico
-y reutilizable en una aplicación Flutter. El propósito de este widget es visualizar datos de tendencias
-(posiblemente relacionados con casos de una enfermedad) de múltiples maneras, adaptándose a las
-preferencias del usuario.
-
-Características principales:
-- Utiliza el paquete fl_chart para crear gráficos interactivos y visualmente atractivos.
-- Soporta cuatro tipos de gráficos: Línea, Barra, Pastel y Polar.
-- Toma una lista de objetos Tendencia y el tipo de gráfico deseado como parámetros.
-- Adapta la visualización de datos basándose en propiedades del objeto Tendencia (tipo, mes, casos). */
-
 class TendenciasChart extends StatelessWidget {
   final List<Tendencia> data;
   final String chartType;
@@ -22,6 +10,7 @@ class TendenciasChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('Datos en TendenciasChart: $data');
     switch (chartType) {
       case 'Line':
         return _buildLineChart();
@@ -37,6 +26,16 @@ class TendenciasChart extends StatelessWidget {
   }
 
   Widget _buildLineChart() {
+    if (data.isEmpty) {
+      return Container(
+        child: Center(
+          child: Text(
+            'No hay datos para la gráfica de línea',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+      );
+    }
     return LineChart(
       LineChartData(
         gridData: FlGridData(show: true),
@@ -53,11 +52,12 @@ class TendenciasChart extends StatelessWidget {
           ),
           bottomTitles: AxisTitles(
             sideTitles: SideTitles(
-              showTitles: false,
+              showTitles: true,
               getTitlesWidget: (value, meta) {
                 final index = value.toInt();
                 return index >= 0 && index < data.length
-                    ? Text(data[index].mes.substring(0, 3), style: TextStyle(color: Colors.white70, fontSize: 12))
+                    ? Text(data[index].mes.substring(0, 3),
+                        style: TextStyle(color: Colors.white70, fontSize: 12))
                     : Text('');
               },
             ),
@@ -67,8 +67,8 @@ class TendenciasChart extends StatelessWidget {
         ),
         borderData: FlBorderData(show: false),
         lineBarsData: [
-          _buildLineData(data, Colors.green, 'A. Potenciales'),
-          _buildLineData(data, Colors.red, 'B. Gubernamental'),
+          _buildLineData(data, Colors.red, 'Casos Positivos'),
+          _buildLineData(data, Colors.yellow, 'Casos Potenciales'),
         ],
         minX: 0,
         maxX: (data.length - 1).toDouble(),
@@ -98,8 +98,8 @@ class TendenciasChart extends StatelessWidget {
               showTitles: true,
               getTitlesWidget: (value, meta) {
                 final index = value.toInt();
-                return index >= 0 && index < data.length
-                    ? Text(data[index].mes.substring(0, 3), style: TextStyle(color: Colors.white70, fontSize: 12))
+                return index >= 0 && index < data.length / 2
+                    ? Text(data[index * 2].mes.substring(0, 3), style: TextStyle(color: Colors.white70, fontSize: 12))
                     : Text('');
               },
             ),
@@ -108,18 +108,25 @@ class TendenciasChart extends StatelessWidget {
           rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
         ),
         borderData: FlBorderData(show: false),
-        barGroups: data.map((t) {
+        barGroups: List.generate(data.length ~/ 2, (i) {
+          final t = data[i * 2];
+          final t2 = data[i * 2 + 1];
           return BarChartGroupData(
-            x: data.indexOf(t),
+            x: i,
             barRods: [
               BarChartRodData(
                 toY: t.casosPositivos.toDouble(),
-                color: t.tipo == 'A. Potenciales' ? Colors.green : Colors.red,
-                width: 20,
+                color: Colors.red,
+                width: 10,
+              ),
+              BarChartRodData(
+                toY: t2.casosSospechosos.toDouble(),
+                color: Colors.yellow,
+                width: 10,
               ),
             ],
           );
-        }).toList(),
+        }),
       ),
     );
   }
@@ -129,41 +136,42 @@ class TendenciasChart extends StatelessWidget {
       PieChartData(
         sections: data.map((t) {
           return PieChartSectionData(
-            value: t.casosPositivos.toDouble(),
-            title: t.mes.substring(0, 3),
-            color: t.tipo == 'A. Potenciales' ? Colors.green : Colors.red,
+            value: t.tipo == 'Casos Positivos' ? t.casosPositivos.toDouble() : t.casosSospechosos.toDouble(),
+            title: '${t.mes.substring(0, 3)}\n${t.tipo == 'Casos Positivos' ? 'Positivos' : 'Sospechosos'}: ${t.tipo == 'Casos Positivos' ? t.casosPositivos : t.casosSospechosos}',
+            color: t.tipo == 'Casos Potenciales' ? Colors.yellow : Colors.red,
           );
         }).toList(),
+        borderData: FlBorderData(show: false),
+        sectionsSpace: 2,
       ),
     );
   }
 
+
   Widget _buildPolarChart() {
-    List<Tendencia> sortedData = List.from(data)..sort((a, b) => _monthOrder(a.mes).compareTo(_monthOrder(b.mes)));
+    List<Tendencia> sortedData = List.from(data)..sort((a, b) => a.mes.compareTo(b.mes));
     final totalPositivos = sortedData.map((e) => e.casosPositivos).reduce((a, b) => a + b);
+    final totalSospechosos = sortedData.map((e) => e.casosSospechosos).reduce((a, b) => a + b);
 
     return AspectRatio(
-      aspectRatio: 1.3,
+      aspectRatio: 4,
       child: PieChart(
         PieChartData(
-          centerSpaceRadius: 0,
-          sections: sortedData.map((t) {
-            final percent = t.casosPositivos / totalPositivos;
-            return PieChartSectionData(
-              value: t.casosPositivos.toDouble(),
-              title: '${t.mes.substring(0, 3)}\n${t.casosPositivos}',
-              color: t.tipo == 'A. Potenciales' ? Colors.green : Colors.red,
-              radius: 80 + (50 * percent),
-              titleStyle: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-                shadows: [Shadow(color: Colors.black, blurRadius: 2)],
-              ),
-            );
-          }).toList(),
+          centerSpaceRadius: 1, // Ajuste del radio del centro
+          sections: [
+            PieChartSectionData(
+              value: totalPositivos.toDouble(),
+              title: 'Positivos\n$totalPositivos',
+              color: Colors.red,
+            ),
+            PieChartSectionData(
+              value: totalSospechosos.toDouble(),
+              title: 'Sospechosos\n$totalSospechosos',
+              color: Colors.yellow,
+            ),
+          ],
           borderData: FlBorderData(show: false),
-          sectionsSpace: 2,
+          sectionsSpace: 5,
         ),
         swapAnimationDuration: Duration(milliseconds: 150),
         swapAnimationCurve: Curves.linear,
@@ -171,28 +179,27 @@ class TendenciasChart extends StatelessWidget {
     );
   }
 
-  LineChartBarData _buildLineData(List<Tendencia> data, Color color, String tipo) {
-    final spots = <FlSpot>[];
-    for (int i = 0; i < data.length; i++) {
-      if (data[i].tipo == tipo) {
-        spots.add(FlSpot(i.toDouble(), data[i].casosPositivos.toDouble()));
-      }
-    }
-    return LineChartBarData(
-      spots: spots,
-      isCurved: true,
-      color: color,
-      barWidth: 4,
-      isStrokeCapRound: true,
-      dotData: FlDotData(show: false),
-      belowBarData: BarAreaData(show: false),
-    );
-  }
 
-  int _monthOrder(String month) {
-    final months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-    return months.indexOf(month);
+  LineChartBarData _buildLineData(List<Tendencia> data, Color color, String tipo) {
+  final spots = <FlSpot>[];
+  for (int i = 0; i < data.length; i++) {
+    if (data[i].tipo == tipo) {
+      double yValue = tipo == 'Casos Positivos' 
+          ? data[i].casosPositivos.toDouble() 
+          : data[i].casosSospechosos.toDouble();
+      spots.add(FlSpot(i.toDouble(), yValue));
+    }
   }
+  return LineChartBarData(
+    spots: spots,
+    isCurved: true,
+    color: color,
+    barWidth: 4,
+    isStrokeCapRound: true,
+    dotData: FlDotData(show: false),
+    belowBarData: BarAreaData(show: false),
+  );
+}
 
   int max(int a, int b) => a > b ? a : b;
 }
