@@ -63,7 +63,7 @@ class HomePage extends StatelessWidget {
                   const SizedBox(height: 16),
                   const AspectRatio(
                     aspectRatio: 16 / 9,
-                    child: VideoWidget(), // Implementa tu propio widget de video aquí
+                    child: VideoWidget(), 
                   ),
                   const SizedBox(height: 16),
                   ElevatedButton(
