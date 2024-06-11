@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import '../screens/tendencias_screen.dart';  // Importa la pantalla de tendencias
 
 void main() {
@@ -43,20 +45,31 @@ class PantallaPrincipal extends StatefulWidget {
 }
 
 class _PantallaPrincipalState extends State<PantallaPrincipal> {
-  List<Localidad> localidades = [
-    Localidad('Localidad 1', 10, 5.2),
-    Localidad('Localidad 2', 5, 8.1),
-    Localidad('Localidad 3', 15, 3.7),
-    Localidad('Localidad 4', 6, 12.5),
-    Localidad('Localidad 5', 14, 7.9),
-    Localidad('Localidad 6', 8, 6.3),
-    Localidad('Localidad 7', 1, 10.8),
-    Localidad('Localidad 8', 20, 2.4),
-    Localidad('Localidad 9', 9, 9.6),
-    Localidad('Localidad 10', 11, 4.5),
-    Localidad('Localidad 11', 15, 6.7),
-    Localidad('Localidad 12', 2, 11.2),
-  ];
+  List<Localidad> localidades = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchLocalidades();
+  }
+
+  Future<void> fetchLocalidades() async {
+    try {
+      final response = await http.get(Uri.parse('http://localhost:8000/api/denunciaFocoUbicacion'));
+      
+      if (response.statusCode == 200) {
+        List<dynamic> data = json.decode(response.body);
+        print(data);  // Agregada esta línea para depuración
+        setState(() {
+          localidades = data.map((json) => Localidad.fromJson(json)).toList();
+        });
+      } else {
+        throw Exception('Error al cargar localidades');
+      }
+    } catch (e) {
+      print('Error fetching localidades: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,9 +109,7 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
                   columns: const [
                     DataColumn(label: Text('Localidad')),
                     DataColumn(label: Text('Casos')),
-                    DataColumn(
-                        label: Text(
-                            'Distancia (km)')), // Nueva columna de distancia
+                    DataColumn(label: Text('Distancia (km)')), // Nueva columna de distancia
                   ],
                   rows: localidades
                       .map(
@@ -106,8 +117,7 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
                           cells: [
                             DataCell(Text(localidad.nombre)),
                             DataCell(Text(localidad.casos.toString())),
-                            DataCell(Text(localidad.distancia
-                                .toString())), // Nueva celda de distancia
+                            DataCell(Text(localidad.distancia.toString())), // Nueva celda de distancia
                           ],
                         ),
                       )
@@ -145,5 +155,13 @@ class Localidad {
   final int casos;
   final double distancia;
 
-  Localidad(this.nombre, this.casos, this.distancia);
+  Localidad({required this.nombre, required this.casos, required this.distancia});
+
+  factory Localidad.fromJson(Map<String, dynamic> json) {
+    return Localidad(
+      nombre: json['ubicacion'],
+      casos: json['count'],
+      distancia: json['distancia'],
+    );
+  }
 }
