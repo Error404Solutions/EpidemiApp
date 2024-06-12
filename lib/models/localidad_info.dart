@@ -7,8 +7,6 @@ class LocalidadInfo {
     required this.nombre,
     required this.casosPositivos,
     required this.casosPotenciales,
-    required this.casos,
-    required this.distancia
   });
 
   factory LocalidadInfo.fromJson(Map<String, dynamic> json) {

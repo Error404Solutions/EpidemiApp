@@ -19,7 +19,7 @@ class _TendenciasScreenState extends State<TendenciasScreen> {
   String _currentChartType = 'Line';
   LocalidadInfo? selectedLocalidad;
   TextEditingController searchController = TextEditingController();
-  ApiService apiService = ApiService('http://10.0.2.2:8000');
+  ApiService apiService = ApiService('http://localhost:8000');
 
   @override
   void initState() {
