@@ -1,22 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import '../models/tendencias.dart';
 import '../models/localidad_info.dart';
 import '../widgets/tendencias_chart.dart';
 import '../widgets/localidad_table.dart';
+import '../src/services/api_service.dart';
 import 'denuncia_screen.dart';
-
-/*
-Este archivo contiene el código para la pantalla TendenciasScreen en una aplicación Flutter.
-El propósito de esta pantalla es mostrar tendencias de casos de una enfermedad (posiblemente COVID-19)
-en diferentes localidades, permitiendo al usuario visualizar los datos de varias maneras y
-registrar nuevos casos positivos.
-
-Características principales:
-- Búsqueda de localidades por nombre, mostrando información detallada de la localidad seleccionada.
-- Gráfico interactivo de tendencias que muestra casos positivos y sospechosos por mes.
-- Opciones para cambiar el tipo de gráfico (línea, barras, circular, pastel).
-- Botón para registrar un nuevo caso positivo, que navega a la pantalla DenunciaScreen.
-- Diseño responsivo y estéticamente agradable con colores y bordes redondeados. */
 
 class TendenciasScreen extends StatefulWidget {
   @override
@@ -24,27 +14,81 @@ class TendenciasScreen extends StatefulWidget {
 }
 
 class _TendenciasScreenState extends State<TendenciasScreen> {
-  final List<Tendencia> data = [
-    Tendencia(mes: 'Enero', casosPositivos: 5, casosSospechosos: 3, tipo: 'A. Potenciales'),
-    Tendencia(mes: 'Febrero', casosPositivos: 7, casosSospechosos: 6, tipo: 'A. Potenciales'),
-    Tendencia(mes: 'Marzo', casosPositivos: 3, casosSospechosos: 8, tipo: 'A. Potenciales'),
-    Tendencia(mes: 'Abril', casosPositivos: 6, casosSospechosos: 4, tipo: 'A. Potenciales'),
-    Tendencia(mes: 'Mayo', casosPositivos: 9, casosSospechosos: 7, tipo: 'B. Gubernamental'),
-    Tendencia(mes: 'Junio', casosPositivos: 8, casosSospechosos: 9, tipo: 'B. Gubernamental'),
-    Tendencia(mes: 'Julio', casosPositivos: 7, casosSospechosos: 6, tipo: 'B. Gubernamental'),
-  ];
-
-  final List<LocalidadInfo> localidades = [
-    LocalidadInfo(nombre: 'Localidad 1', casos: 10, distancia: '5 km'),
-    LocalidadInfo(nombre: 'Localidad 2', casos: 5, distancia: '10 km'),
-    LocalidadInfo(nombre: 'Localidad 3', casos: 15, distancia: '3 km'),
-    LocalidadInfo(nombre: 'Localidad 4', casos: 3, distancia: '5 Km'),
-    LocalidadInfo(nombre: 'Localidad 5', casos: 21, distancia: '20 Km'),
-  ];
-
+  List<Tendencia> data = [];
+  List<LocalidadInfo> localidades = [];
   String _currentChartType = 'Line';
   LocalidadInfo? selectedLocalidad;
   TextEditingController searchController = TextEditingController();
+  ApiService apiService = ApiService('http://10.0.2.2:8000');
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  void fetchData() async {
+    try {
+      List<dynamic> denunciasFoco = await apiService.listarDenunciasUbic();
+      print('Datos de denunciasFoco: $denunciasFoco');
+
+      List<dynamic> denunciasPersona = await apiService.listarDenunciasPoUbic();
+      print('Datos de denunciasPersona: $denunciasPersona');
+
+      Map<String, LocalidadInfo> localidadesMap = {};
+
+      for (var item in denunciasFoco) {
+        localidadesMap[item['ubicacion'] ?? 'Desconocido'] = LocalidadInfo(
+          nombre: item['ubicacion'] ?? 'Desconocido',
+          casosPositivos: item['count'],
+          casosPotenciales: 0,
+        );
+      }
+
+      for (var item in denunciasPersona) {
+        if (localidadesMap.containsKey(item['ubicacion'])) {
+          var localidad = localidadesMap[item['ubicacion']]!;
+          localidadesMap[item['ubicacion']] = LocalidadInfo(
+            nombre: localidad.nombre ?? 'Desconocido',
+            casosPositivos: localidad.casosPositivos,
+            casosPotenciales: item['count'],
+          );
+        } else {
+          localidadesMap[item['ubicacion'] ?? 'Desconocido'] = LocalidadInfo(
+            nombre: item['ubicacion'] ?? 'Desconocido',
+            casosPositivos: 0,
+            casosPotenciales: item['count'],
+          );
+        }
+      }
+
+      setState(() {
+        localidades = localidadesMap.values.toList();
+        data = localidadesMap.values.expand((localidad) => [
+          Tendencia(
+            mes: localidad.nombre ?? 'Desconocido',
+            tipo: 'Casos Positivos',
+            casosPositivos: localidad.casosPositivos,
+            casosSospechosos: localidad.casosPotenciales,
+          ),
+          Tendencia(
+            mes: localidad.nombre ?? 'Desconocido',
+            tipo: 'Casos Potenciales',
+            casosPositivos: localidad.casosPositivos,
+            casosSospechosos: localidad.casosPotenciales,
+          ),
+        ]).toList();
+      });
+
+
+      print('Localidades combinadas: $localidades');
+      print('Datos de tendencias: $data');
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -68,17 +112,41 @@ class _TendenciasScreenState extends State<TendenciasScreen> {
                 prefixIcon: Icon(Icons.search),
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
               ),
-              onSubmitted: (value) {
+              onChanged: (value) {
                 setState(() {
-                  selectedLocalidad = localidades.firstWhere(
-                    (loc) => loc.nombre.toLowerCase() == value.toLowerCase(),
-                    orElse: () => LocalidadInfo(nombre: 'No encontrada', casos: 0, distancia: '0 Km'),
-                  );
+                  selectedLocalidad = null; // Reiniciar la selección al cambiar el texto de búsqueda
                 });
+              },
+              onSubmitted: (value) async {
+                String lowercaseValue = value.toLowerCase();
+                // Buscar la localidad que coincide con el valor ingresado (insensible a mayúsculas/minúsculas)
+                var matchingLocalities = localidades.where((loc) => loc.nombre?.toLowerCase().contains(lowercaseValue) ?? false).toList();
+                if (matchingLocalities.isNotEmpty) {
+                  setState(() {
+                    // Establecer la primera coincidencia como la localidad seleccionada
+                    selectedLocalidad = matchingLocalities.first;
+                  });
+                  print('Localidad encontrada: ${selectedLocalidad!.nombre}');
+                } else {
+                  // Mostrar la tabla con la información de "No encontrada"
+                  setState(() {
+                    selectedLocalidad = LocalidadInfo(
+                      nombre: 'No encontrada',
+                      casosPositivos: 0,
+                      casosPotenciales: 0,
+                    );
+                  });
+                  print('Localidad no encontrada');
+                }
               },
             ),
             SizedBox(height: 20),
-            if (selectedLocalidad != null) ...[
+            if (selectedLocalidad != null && selectedLocalidad!.nombre != 'No encontrada') ...[
+              Text('Información de la Localidad', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              SizedBox(height: 10),
+              LocalidadTable(localidad: selectedLocalidad!),
+              SizedBox(height: 20),
+            ] else if (selectedLocalidad != null) ...[
               Text('Información de la Localidad', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               SizedBox(height: 10),
               LocalidadTable(localidad: selectedLocalidad!),
@@ -89,11 +157,13 @@ class _TendenciasScreenState extends State<TendenciasScreen> {
                 height: 300,
                 decoration: BoxDecoration(
                   color: Colors.blue[800],
-                  borderRadius: BorderRadius.circular(20), // Radio de borde de 20
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: TendenciasChart(data: data, chartType: _currentChartType),
+                  child: data.isNotEmpty 
+                    ? TendenciasChart(data: data, chartType: _currentChartType)
+                    : Center(child: Text('No hay datos para mostrar', style: TextStyle(color: Colors.white))),
                 ),
               ),
             ),
