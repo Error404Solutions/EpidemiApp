@@ -27,7 +27,6 @@ class HomeScreen extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // Contenido principal
           Expanded(
             child: Center(
               child: Column(
@@ -55,7 +54,6 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
           ),
-          // Footer con el icono y el texto
           Container(
             padding: EdgeInsets.all(16.0),
             color: Colors.grey[200],

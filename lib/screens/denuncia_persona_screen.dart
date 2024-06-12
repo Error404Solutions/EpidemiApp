@@ -28,7 +28,7 @@ class _DenunciaPersonaScreenState extends State<DenunciaPersonaScreen> {
   final TextEditingController sintomasController = TextEditingController();
   final TextEditingController ubicacionController = TextEditingController();
 
-  DateTime? selectedDate; // Variable to store selected date
+  DateTime? selectedDate; 
 
   void _showSuccessDialog() {
     showDialog(
@@ -129,24 +129,19 @@ class _DenunciaPersonaScreenState extends State<DenunciaPersonaScreen> {
       },
     );
   }
-
+  //Verificando rangos y tipos correctos
   void _handleSubmit() {
     if (_formKey.currentState!.validate()) {
-      // Checking if name length is greater than 100
       if (nombreController.text.length > 100) {
         _showNameErrorDialog();
       }
-      // Checking if last name length is greater than 100
       else if (apellidoController.text.length > 100) {
         _showLastNameErrorDialog();
       }
-      // Checking if the selected date is not equal to the current date
       else if (_isDateDifferentFromToday(selectedDate)) {
         _showDateErrorDialog();
       } else {
         _formKey.currentState!.save();
-        // Aquí puedes hacer lo que necesites con los datos recopilados,
-        // como enviarlos a través de una solicitud HTTP.
         _showSuccessDialog();
       }
     } else {
@@ -154,7 +149,6 @@ class _DenunciaPersonaScreenState extends State<DenunciaPersonaScreen> {
     }
   }
 
-  // Function to check if the selected date is different from today
   bool _isDateDifferentFromToday(DateTime? date) {
     if (date == null) return true;
 

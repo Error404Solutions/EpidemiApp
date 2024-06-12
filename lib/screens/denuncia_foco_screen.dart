@@ -1,7 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
-
 /* Este código define una pantalla de Flutter llamada DenunciaFocoScreen, que permite a los usuarios
    denunciar un "foco" (posiblemente un foco de infección o un problema en una ubicación específica).
    La pantalla incluye un formulario con campos para ingresar una descripción, ubicación y fecha,
@@ -14,6 +10,13 @@ import 'dart:io';
    - Captura de imagen usando la cámara del dispositivo.
    - Muestra diálogos para informar al usuario sobre errores o éxito en el envío.
    - Limpia los campos del formulario después de un envío exitoso. */
+
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:intl/intl.dart'; // Importa la biblioteca de formateo de fechas
 
 class DenunciaFocoScreen extends StatefulWidget {
   @override
@@ -47,7 +50,8 @@ class _DenunciaFocoScreenState extends State<DenunciaFocoScreen> {
     );
     if (picked != null && picked != DateTime.now())
       setState(() {
-        fechaController.text = "${picked.toLocal()}".split(' ')[0];
+        // Formatea la fecha seleccionada como un string
+        fechaController.text = DateFormat('yyyy-MM-dd').format(picked);
       });
   }
 
@@ -80,9 +84,10 @@ class _DenunciaFocoScreenState extends State<DenunciaFocoScreen> {
     });
   }
 
-  void _handleSubmit() {
+  Future<void> _handleSubmit() async {
     if (_formKey.currentState!.validate()) {
       String descripcion = descripcionController.text;
+      String ubicacion = ubicacionController.text;
       DateTime fechaActual = DateTime.now();
       String fechaActualStr = "${fechaActual.toLocal()}".split(' ')[0];
       String fechaIngresada = fechaController.text;
@@ -97,9 +102,36 @@ class _DenunciaFocoScreenState extends State<DenunciaFocoScreen> {
         return;
       }
 
-      _formKey.currentState!.save();
-      _showDialog("Éxito", "Sus datos se han enviado correctamente");
-      _clearFields();
+      try {
+        var url = Uri.parse('http://localhost:8000/api/denunciaF');
+        var request = http.Request('POST', url);
+        request.headers['content-type'] = 'application/json'; // Establece el tipo de contenido JSON
+        
+        // Crea el cuerpo del JSON con los datos del formulario
+        var jsonBody = jsonEncode({
+          "idAutor": '1',
+          "descripcion": descripcion,
+          "ubicacion": ubicacion,
+          "fechaDenuncia": fechaIngresada,
+          "foto": _image != null ? _image!.path : 'foto', // Envía la ruta de la imagen si está presente
+        });
+
+        print(jsonBody);
+
+        request.body = jsonBody; // Asigna el cuerpo JSON a la solicitud
+
+        var response = await request.send();
+
+        if (response.statusCode == 201) {
+          _showDialog("Éxito", "Sus datos se han enviado correctamente");
+          _clearFields();
+        } else {
+          var responseBody = await response.stream.bytesToString();
+          _showDialog("Error", "Hubo un problema al enviar los datos: ${responseBody}");
+        }
+      } catch (e) {
+        _showDialog("Error", "Hubo un problema al enviar los datos: $e");
+      }
     } else {
       _showDialog("Campos Incompletos", "Por favor complete correctamente todos los campos.");
     }
@@ -161,6 +193,7 @@ class _DenunciaFocoScreenState extends State<DenunciaFocoScreen> {
                 _image == null
                     ? Text('No se ha seleccionado una imagen.')
                     : Image.file(_image!),
+                SizedBox(height: 10),
                 SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: _pickImage,

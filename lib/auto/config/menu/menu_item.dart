@@ -13,56 +13,27 @@ class MenuItem {
       required this.icon});
 }
 
-
+//Menu principal de la aplicacion utilizando la clase MenuItem
 const appMenuItems = <MenuItem>[
-  /* MenuItem(
-      title: 'Botones',
-      subTitle: 'Varios',
-      link: '/buttons',
-      icon: Icons.videocam
-    ),
-
-    MenuItem(
-      title: 'Tarjetas',
-      subTitle: 'contenedor',
-      link: '/cards',
-      icon: Icons.warning
-    ),
-
-    MenuItem(
-      title: 'ProgressIndicators',
-      subTitle: 'Generales y controlados',
-      link: '/progress',
-      icon: Icons.refresh_rounded
-    ),
-    MenuItem(
-      title: 'Snackbars y dialogos', 
-      subTitle: 'Indicadores en pantalla',
-      link: '/snackbars',
-      icon: Icons.info_outline
-    ), */
-    MenuItem(
+  MenuItem(
       title: 'Peligros de la automedicacion',
-      subTitle: 'La información proporcionada aquí no es un sustituto del consejo médico profesional.',
+      subTitle:
+          'La información proporcionada aquí no es un sustituto del consejo médico profesional.',
       link: '/tutorial',
-      icon: Icons.info_outline
-    ),
-    MenuItem(
+      icon: Icons.info_outline),
+  MenuItem(
       title: 'Videos cortos y educativos',
       subTitle: 'Practicas y uso racional de medicamentos.',
       link: '/videos',
-      icon: Icons.info_outline
-    ),
-    MenuItem(
+      icon: Icons.info_outline),
+  MenuItem(
       title: 'Casos Registrados',
       subTitle: 'Tabla de casos del dengue.',
       link: '/casos',
-      icon: Icons.info_outline
-    ),
-    MenuItem(
+      icon: Icons.info_outline),
+  MenuItem(
       title: 'Informacion Dengue',
       subTitle: 'Portafolio educativo.',
       link: '/info',
-      icon: Icons.info_outline
-    ),
+      icon: Icons.info_outline),
 ];
